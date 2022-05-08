@@ -1,5 +1,5 @@
 name: poseidon
-description: A new Flutter package project.
+description: Simple wrapper for Flutter navigation without context.
 version: 0.0.1
 homepage:
 
