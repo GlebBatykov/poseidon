@@ -1,6 +1,8 @@
 part of poseidon;
 
 class Poseidon {
+  static Poseidon? _instance;
+
   final GlobalKey<NavigatorState> navigationKey = GlobalKey();
 
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey();
@@ -8,6 +10,16 @@ class Poseidon {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
   final List<PoseidonRoute> _routes = [];
+
+  static Poseidon get instance {
+    return _instance ?? newInstance;
+  }
+
+  static Poseidon get newInstance {
+    return (_instance = Poseidon._());
+  }
+
+  Poseidon._();
 
   Future<void> navigate<A extends PoseidonArguments>(String path,
       {PoseidonArguments? arguments}) {
@@ -19,7 +31,7 @@ class Poseidon {
 
       return navigationKey.currentState!.push(route);
     } else {
-      throw PoseidonException();
+      throw PoseidonException(message: 'Poseidon has no route with this path.');
     }
   }
 
@@ -31,7 +43,8 @@ class Poseidon {
     if (_routes.where((element) => element.path == route.path).isEmpty) {
       _routes.add(route);
     } else {
-      throw PoseidonException();
+      throw PoseidonException(
+          message: 'Poseidon already has route with this path.');
     }
   }
 
@@ -43,6 +56,10 @@ class Poseidon {
 
   void removeRoute(String path) {
     _routes.removeWhere((element) => element.path == path);
+  }
+
+  void removeRoutes() {
+    _routes.clear();
   }
 
   void showSnackBar(SnackBar snackBar) {
