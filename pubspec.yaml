@@ -1,6 +1,6 @@
 name: poseidon
 description: Simple wrapper for Flutter navigation without context.
-version: 0.0.1
+version: 1.0.0
 homepage:
 
 environment:
