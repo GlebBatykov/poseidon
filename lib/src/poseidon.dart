@@ -66,6 +66,15 @@ class Poseidon {
     scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
   }
 
+  void hideCurrentSnackBar(
+      {SnackBarClosedReason reason = SnackBarClosedReason.hide}) {
+    scaffoldMessengerKey.currentState!.hideCurrentSnackBar(reason: reason);
+  }
+
+  void clearSnackBars() {
+    scaffoldMessengerKey.currentState!.clearSnackBars();
+  }
+
   void openDrawer() {
     scaffoldKey.currentState!.openDrawer();
   }
