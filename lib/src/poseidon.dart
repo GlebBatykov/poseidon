@@ -9,57 +9,22 @@ class Poseidon {
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
-  final List<PoseidonRoute> _routes = [];
-
   static Poseidon get instance {
-    return _instance ?? newInstance;
-  }
+    _instance ??= Poseidon._();
 
-  static Poseidon get newInstance {
-    return (_instance = Poseidon._());
+    return _instance!;
   }
 
   Poseidon._();
 
-  Future<void> navigate<A extends PoseidonArguments>(String path,
-      {PoseidonArguments? arguments}) {
-    if (_routes.where((element) => element.path == path).isNotEmpty) {
-      var poseidonRoute = _routes.firstWhere((element) => element.path == path);
+  Future<T?> navigate<T>(PoseidonRoute<T> route) async {
+    var materialPageRoute = await route.route(navigationKey.currentContext!);
 
-      var route = poseidonRoute.build(navigationKey.currentContext!,
-          arguments: arguments);
-
-      return navigationKey.currentState!.push(route);
-    } else {
-      throw PoseidonException(message: 'Poseidon has no route with this path.');
-    }
+    return navigationKey.currentState!.push(materialPageRoute);
   }
 
   void pop() {
     navigationKey.currentState!.pop();
-  }
-
-  void createRoute({required PoseidonRoute route}) {
-    if (_routes.where((element) => element.path == route.path).isEmpty) {
-      _routes.add(route);
-    } else {
-      throw PoseidonException(
-          message: 'Poseidon already has route with this path.');
-    }
-  }
-
-  void createRoutes({required List<PoseidonRoute> routes}) {
-    for (var route in routes) {
-      createRoute(route: route);
-    }
-  }
-
-  void removeRoute(String path) {
-    _routes.removeWhere((element) => element.path == path);
-  }
-
-  void removeRoutes() {
-    _routes.clear();
   }
 
   void showSnackBar(SnackBar snackBar) {
